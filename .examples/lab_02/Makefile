@@ -21,18 +21,18 @@ sv := $(curdir)/$(example).sv
 
 .PHONY: run clean
 
-run: $(out)/compile.stamp
-	@echo -n "Running $(example) (log at $(out)/sim.log)..."
+run: $(out)/compile_$(example).stamp
+	@echo -n "Running $(example) (log at $(out)/sim_$(example).log)..."
 	@cd $(out) && vsim -c $(example) -lib work +UVM_TESTNAME=$(testname) \
-		-do "run -a;" -voptargs=+acc $(run_opts) > sim.log
+		-do "run -a;" -voptargs=+acc $(run_opts) > sim_$(example).log
 	@echo "done"
 
-$(out)/compile.stamp: $(sv)
-	@echo -n "Compiling $(example) (log at $(out)/compile.log)..."
+$(out)/compile_$(example).stamp: $(sv)
+	@echo -n "Compiling $(example) (log at $(out)/compile_$(example).log)..."
 	@mkdir -p $(out)
-	@cd $(out) && vlib work > compile.log
-	@cd $(out) && vmap work work > compile.log
-	@cd $(out) && vlog $(sv) > compile.log
+	@cd $(out) && vlib work > compile_$(example).log
+	@cd $(out) && vmap work work > compile_$(example).log
+	@cd $(out) && vlog $(sv) > compile_$(example).log
 	@echo "done"
 	@touch $@
 
